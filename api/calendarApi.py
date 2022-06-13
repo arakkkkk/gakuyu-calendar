@@ -25,7 +25,7 @@ class CalendarApi:
         SCOPES = ['https://www.googleapis.com/auth/calendar']
         # SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
         self.creds = load_credentials_from_file(
-          'credentials.json', SCOPES
+          'api/credentials.json', SCOPES
         )[0]
         self.calenderId = "im2guap9ivnn1t2ace16av5qi8@group.calendar.google.com"
         self.service = build('calendar', 'v3', credentials=self.creds)

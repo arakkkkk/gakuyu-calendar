@@ -1,0 +1,5 @@
+ google-api-python-client
+ google-auth-httplib2
+ google-auth-oauthlib                                                                                                                                                                         Mon Jun 13 10:29:26 2022
+ flask
+

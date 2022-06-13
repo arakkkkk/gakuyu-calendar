@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-3.1.0.min.js"></script>
+    <!-- <link href="css/style.css" rel="stylesheet"> -->
+  </head>
+  <body>
+
+    <div>
+      <label>貸出</label>
+      <input type="date" id="start_date">
+    </div>
+  
+    <div>
+      <label>返却</label>
+      <input type="date" id="end_date">
+    </div>
+
+    <button onclick="submit_form()">予約を調べる</button>
+    <!-- <div> -->
+    <!--   <label for="mainselect">備品のカテゴリ</label> -->
+    <!--   <select id="equip_category" name="mainselect" onchange="set_equipment_option(this)"> -->
+    <!--     <option value="">-</option> -->
+    <!--     {% for equip_category in equip_json %} -->
+    <!--     <option value="{{equip_category}}">{{ equip_category }}</option> -->
+    <!--     {% endfor %} -->
+    <!--  </select> -->
+    <!-- </div> -->
+    <!-- <div> -->
+    <!--   <label for="mainselect">名前</label> -->
+    <!--   <select id="equip_name" name="subselect" onchange="set_count_option(this)"> -->
+    <!--     <option value="">-</option> -->
+    <!--  </select> -->
+    <!-- </div> -->
+    <!-- <div> -->
+    <!--   <label for="mainselect">個数</label> -->
+    <!--   <select id="equip_count" name="subsubselect"> -->
+    <!--     <option value="">-</option> -->
+    <!--  </select> -->
+    <!-- </div> -->
+
+  </body>
+</html>
+
+<script>
+  var reservations = "{{ reservations | safe }}".replaceAll("'", '"');
+  var reservations = JSON.parse(equip_str)
+  console.log(reservations)
+
+  const set_equipment_option = (element) => {
+    let $child_selection = document.getElementById("equip_name")
+    document.getElementById("equip_count").innerHTML = ""
+    var content_str = `<option value="">-</option>`
+    for(let equip of equip_json[element.value]){
+        content_str += `<option value="${equip[0]}">${equip[0]}</option>`
+    }
+    $child_selection.innerHTML = content_str
+  }
+
+  const set_count_option = (element) => {
+    let $child_selection = document.getElementById("equip_count")
+    var content_str = `<option value="">-</option>`
+    for(let cate in equip_json){
+      for(let equip of equip_json[cate]) {
+        if(equip[0] != element.value) continue
+        for(let i=1; i<=equip[1]; i++) {
+          content_str += `<option value="${i}">${i}</option>`
+        }
+      }
+    }
+    $child_selection.innerHTML = content_str
+  }
+
+  const check_form = () => {
+      if(document.getElementById("start_date").value == ""
+        || document.getElementById("start_time").value == ""
+        || document.getElementById("end_date").value == ""
+        || document.getElementById("end_time").value == ""
+        || document.getElementById("equip_category").value == ""
+        || document.getElementById("equip_name").value == ""
+        || document.getElementById("equip_count").value == ""
+        ) {
+          alert("入力を確認してください")
+          return false
+        }
+        return true
+    }
+
+  const submit_form = () => {
+    if(!check_form()) return
+    const json = {
+      start: document.getElementById("start_date").value,
+      end: document.getElementById("end_date").value,H
+    }
+    $.ajax({
+    type: "POST",
+    url: "/api/equipments/list",
+    contentType: "application/json",
+    data: JSON.stringify(json),
+    dataType: "json",
+    scriptCharset: "utf-8",
+    })
+    .done(function (result) {
+      console.log(result)
+    })
+    .fail(function (data, jqXHR, textStatus, errorThrown) {
+      alert("Sorry, the simulation was failed. \n Something wrong.");
+    })
+    .always(function () {
+    });
+  }
+</script>
+
