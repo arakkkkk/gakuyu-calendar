@@ -2,6 +2,7 @@
 <html lang="en">
   {% include "layouts/_headtag.html" %}
   <body>
+    {% include "layouts/_gen.html" %}
 
     <table class="table table-bordered" id="reservation_table">
 
@@ -126,7 +127,7 @@
         || document.getElementById("client").value == ""
         || document.getElementById("tell").value == ""
         ) {
-          set_alert("check", "Help:  Select speices want to contein,<br>and click create button.", "success", 3.5)
+          set_alert("alert", "入力に不備があります。", "danger")
           return false
         }
         return true
@@ -164,9 +165,10 @@
     })
     .done(function (result) {
       console.log(result)
+      set_alert("check", "予約されました。", "success")
     })
     .fail(function (data, jqXHR, textStatus, errorThrown) {
-      alert("Sorry, the simulation was failed. \n Something wrong.");
+      set_alert("alert", "予約に失敗しました。ネットワークを確認して再度予約してください。", "danger")
     })
     .always(function () {
     });

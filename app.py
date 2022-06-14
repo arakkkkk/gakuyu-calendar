@@ -26,7 +26,10 @@ def equipments_list():
 @app.route('/api/equipments/list', methods=["POST"])
 def api_equipments_list():
     api = CalendarApi()
-    reservations = api.get()
+    reservations = api.get(
+            start = util.request2datetime(request.json["start"]).isoformat(),
+            end = util.request2datetime(request.json["end"]).isoformat()
+            )
     return json.dumps(reservations)
 
 @app.route('/api/equipments/insert', methods=["POST"])
@@ -35,7 +38,7 @@ def api_equipments_insert():
     api = CalendarApi()
     api.insert(
             title = json["title"],
-            description_json = json["desctiprion"],
+            description_json = json["description"],
             start = util.request2datetime(json["start"]).isoformat(),
             end = util.request2datetime(json["end"]).isoformat()
             )

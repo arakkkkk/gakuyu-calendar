@@ -1,0 +1,9 @@
+.alert-overlay {
+    position: fixed; /* Sit on top of the page content */
+    top: 30px;
+    left: 400px;
+    right: 400px;
+    z-index: 10000; /* Specify a stack order in case you're using a different order for other elements */
+    cursor: pointer; /* Add a pointer on hover */
+}
+

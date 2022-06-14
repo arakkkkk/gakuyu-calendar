@@ -2,6 +2,7 @@
 <html lang="en">
   {% include "layouts/_headtag.html" %}
   <body>
+    {% include "layouts/_gen.html" %}
 
     <div>
       <label>貸出</label>
@@ -18,17 +19,17 @@
     <table class="table table-bordered" id="reservation_table">
       <thead>
         <tr>
+          <th>団体名</td>
+          <th>名前</td>
+          <th>TELL</td>
           <th>備品名</td>
-          <th></td>
-          <th></td>
+          <th>個数</td>
+          <th>貸出時間</td>
+          <th>返却時間</td>
+          <th>予約日</td>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>jfiosida</td>
-          <td>jfiosida</td>
-          <td>jfiosida</td>
-        </tr>
       </tbody>
     </table>
 
@@ -40,7 +41,7 @@
       if(document.getElementById("start_date").value == ""
         || document.getElementById("end_date").value == ""
         ) {
-          alert("入力を確認してください")
+          set_alert("alert", "入力に不備があります。", "danger")
           return false
         }
         return true
@@ -51,19 +52,30 @@
     for(let reservation of reservations) {
         table_contents += `
           <tr>
-             <td>${reservation.summary}</td>
+             <td>${reservation.description.group}</td>
+             <td>${reservation.description.client}</td>
+             <td>${reservation.description.tell}</td>
+             <td>${reservation.description.name}</td>
+             <td>${reservation.description.count}</td>
              <td>${reservation.start.dateTime}</td>
              <td>${reservation.end.dateTime}</td>
+             <td>${reservation.created}</td>
           </tr>`
     }
     document.querySelector("#reservation_table > tbody").innerHTML = table_contents
   }
 
   const submit_form = () => {
-    //if(!check_form()) return
+    if(!check_form()) return
     const json = {
-      start: document.getElementById("start_date").value,
-      end: document.getElementById("end_date").value,
+      start: {
+        date: document.getElementById("start_date").value,
+        time: "00:00"
+      },
+      end: {
+        date: document.getElementById("end_date").value,
+        time: "23:59"
+      },
     }
     $.ajax({
     type: "POST",
@@ -78,7 +90,7 @@
       console.log(result)
     })
     .fail(function (data, jqXHR, textStatus, errorThrown) {
-      alert("Sorry, the simulation was failed. \n Something wrong.");
+      set_alert("alert", "予約の取得に失敗しました。ネットワークを確認してください。", "danger")
     })
     .always(function () {
     });
