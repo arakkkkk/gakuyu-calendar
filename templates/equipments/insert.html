@@ -1,50 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title></title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script type="text/javascript" src="http://code.jquery.com/jquery-3.1.0.min.js"></script>
-    <!-- <link href="css/style.css" rel="stylesheet"> -->
-  </head>
+  {% include "layouts/_headtag.html" %}
   <body>
 
-    <div>
-      <label>貸出</label>
-      <input type="date" id="start_date">
-      <input type="time" id="start_time">
-    </div>
-  
-    <div>
-      <label>返却</label>
-      <input type="date" id="end_date">
-      <input type="time" id="end_time">
-    </div>
+    <table class="table table-bordered" id="reservation_table">
 
-    <div>
-      <label for="mainselect">備品のカテゴリ</label>
-      <select id="equip_category" name="mainselect" onchange="set_equipment_option(this)">
-        <option value="">-</option>
-        {% for equip_category in equip_json %}
-        <option value="{{equip_category}}">{{ equip_category }}</option>
-        {% endfor %}
-     </select>
-    </div>
-    <div>
-      <label for="mainselect">名前</label>
-      <select id="equip_name" name="subselect" onchange="set_count_option(this)">
-        <option value="">-</option>
-     </select>
-    </div>
-    <div>
-      <label for="mainselect">個数</label>
-      <select id="equip_count" name="subsubselect">
-        <option value="">-</option>
-     </select>
-    </div>
+      <tr>
+        <td><h5>備品情報</h5></td>
+      </tr>
+      <tr>
+        <td>貸出</td>
+        <td>
+          <input type="date" id="start_date">
+          <input type="time" id="start_time">
+        </td>
+      </tr>
+      <tr>
+        <td>返却</td>
+        <td>
+          <input type="date" id="end_date">
+          <input type="time" id="end_time">
+        </td>
+      </tr>
+      <tr>
+        <td>備品のカテゴリ</td>
+        <td>
+          <select id="equip_category" onchange="set_equipment_option(this)">
+            <option value="">-</option>
+            {% for equip_category in equip_json %}
+            <option value="{{equip_category}}">{{ equip_category }}</option>
+            {% endfor %}
+         </select>
+        </td>
+      </tr>
+      <tr>
+        <td>名前</td>
+        <td>
+          <select id="equip_name" onchange="set_count_option(this)">
+            <option value="">-</option>
+         </select>
+        </td>
+      </tr>
+      <tr>
+        <td>個数</td>
+        <td>
+          <select id="equip_count" name="subsubselect">
+            <option value="">-</option>
+         </select>
+        </td>
+      </tr>
+
+      <tr>
+        <td><h5>利用者情報</h5></td>
+      </tr>
+      <tr>
+        <td>団体名</td>
+        <td>
+          <input id="group" />
+        </td>
+      </tr>
+      <tr>
+        <td>名前</td>
+        <td>
+          <input id="client" />
+        </td>
+      </tr>
+      <tr>
+        <td>Tell</td>
+        <td> 
+          <input id="tell" />
+        </td>
+      </tr>
+      <tr>
+        <td>備考</td>
+        <td> 
+          <textarea id="note" style="width:100%;height:100%;"></textarea>
+        </td>
+      </tr>
+
+    </table>
 
     <button onclick="submit_form()">予約する</button>
+
   </body>
 </html>
 
@@ -85,8 +122,11 @@
         || document.getElementById("equip_category").value == ""
         || document.getElementById("equip_name").value == ""
         || document.getElementById("equip_count").value == ""
+        || document.getElementById("group").value == ""
+        || document.getElementById("client").value == ""
+        || document.getElementById("tell").value == ""
         ) {
-          alert("入力を確認してください")
+          set_alert("check", "Help:  Select speices want to contein,<br>and click create button.", "success", 3.5)
           return false
         }
         return true
@@ -95,6 +135,7 @@
   const submit_form = () => {
     if(!check_form()) return
     const json = {
+      title: document.getElementById("equip_name").value,
       start: {
         date: document.getElementById("start_date").value,
         time: document.getElementById("start_time").value,
@@ -103,12 +144,15 @@
         date: document.getElementById("end_date").value,
         time: document.getElementById("end_time").value,
       },
-      equipment: {
+      description: {
         category: document.getElementById("equip_category").value,
         name: document.getElementById("equip_name").value,
         count: document.getElementById("equip_count").value,
+        group: document.getElementById("group").value,
+        client: document.getElementById("client").value,
+        tell: document.getElementById("tell").value,
+        note: document.getElementById("note").value,
       },
-      description: ""
     }
     $.ajax({
     type: "POST",

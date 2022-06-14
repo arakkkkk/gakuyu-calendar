@@ -34,8 +34,8 @@ def api_equipments_insert():
     json = request.json
     api = CalendarApi()
     api.insert(
-            title = json["equipment"]["name"],
-            description_json = json["equipment"],
+            title = json["title"],
+            description_json = json["desctiprion"],
             start = util.request2datetime(json["start"]).isoformat(),
             end = util.request2datetime(json["end"]).isoformat()
             )
