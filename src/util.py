@@ -5,7 +5,7 @@ def getJsonByDirectory(path) -> dict:
     files = glob.glob(path+"/*")
     res_json = {}
     for file in files:
-        f = open(file)
+        f = open(file, encoding='utf-8')
         file_content = f.read()
         f.close()
     
