@@ -76,6 +76,19 @@ class CalendarApi:
                 ).execute()
         return result
 
+    def update(self, event_id, **ops):
+        event = self.service.events().get(
+                calendarId=self.calenderId,
+                eventId=event_id).execute()
+        for key, val in ops.items():
+            desc_json = json.loads(event["description"])
+            desc_json[key] = val
+        event["description"] = json.dumps(desc_json, indent=2, ensure_ascii=False)
+        response = self.service.events().update(
+                calendarId=self.calenderId,
+                eventId=event_id,
+                body=event).execute()
+
 
 if __name__ == '__main__':
     api = CalendarApi()

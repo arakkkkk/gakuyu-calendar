@@ -20,6 +20,7 @@ def equipments_insert():
 
 @app.route('/equipments/list')
 def equipments_list():
+    api = CalendarApi()
     return render_template("equipments/list.html")
 
 
@@ -52,4 +53,16 @@ def api_equipments_delete():
             )
     return json.dumps(res)
 
+@app.route('/api/equipments/update', methods=["POST"])
+def api_equipments_update():
+    api = CalendarApi()
+    status = request.json["status"]
+    event_id = request.json["event_id"]
+    if status == "予約":
+        res = api.update(event_id, status="予約")
+    elif status == "貸出":
+        res = api.update(event_id, status="貸出")
+    elif status == "返却":
+        res = api.update(event_id, status="返却")
+    return json.dumps(res)
 app.run(port=8080, debug=True)

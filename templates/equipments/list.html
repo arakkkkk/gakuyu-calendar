@@ -32,6 +32,8 @@
           <th>貸出時間</td>
           <th>返却時間</td>
           <th>予約日</td>
+          <th>状態</td>
+          <th></td>
           <th>削除</td>
         </tr>
       </thead>
@@ -57,6 +59,12 @@
   const create_table = (reservations) =>{
     table_contents = ""
     for(let reservation of reservations) {
+        let change_button
+        if(reservation.description.status == "予約") {
+          change_button = `<button onclick="update_event('貸出')">貸し出す</button>`
+        } else {
+          //change_button = `<td><button onclick="update_event('貸出')">貸し出す</button></td>`
+        }
         table_contents += `
           <tr>
              <td>${reservation.description.group}</td>
@@ -67,6 +75,8 @@
              <td>${reservation.start.dateTime}</td>
              <td>${reservation.end.dateTime}</td>
              <td>${reservation.created}</td>
+             <td>${reservation.description.status}</td>
+             <td>${change_button}</td>
              <td>
                <a onclick="delete_reservation('${reservation.id}', this)" style="cursor:pointer">
                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="blue" class="bi bi-trash" viewBox="0 0 16 16">
@@ -143,5 +153,7 @@
       $("#overlay").fadeOut();
     });
   }
+
+  const update_event = () => {}
 </script>
 
