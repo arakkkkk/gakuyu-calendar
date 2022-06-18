@@ -55,6 +55,7 @@ class CalendarApi:
             events[i]["end"]["dateTime"] = datetime.strptime(event["end"]["dateTime"], '%Y-%m-%dT%H:%M:%S+09:00')
             events[i]["end"]["dateTime"] = event["end"]["dateTime"].strftime('%Y/%m/%d %H:%M')
             events[i]["description"] = json.loads(event["description"])
+                
         return events
 
     def insert(self, title, description_json, start, end):
@@ -68,6 +69,12 @@ class CalendarApi:
         events_result = self.service.events().insert(
                 calendarId=self.calenderId,
                 body=body).execute()
+
+    def delete(self, event_id):
+        result = self.service.events().delete(
+                calendarId=self.calenderId, eventId=event_id
+                ).execute()
+        return result
 
 
 if __name__ == '__main__':

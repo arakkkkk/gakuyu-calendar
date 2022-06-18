@@ -43,4 +43,13 @@ def api_equipments_insert():
             end = util.request2datetime(json["end"]).isoformat()
             )
     return json
+
+@app.route('/api/equipments/delete', methods=["POST"])
+def api_equipments_delete():
+    api = CalendarApi()
+    res = api.delete(
+            event_id = request.json["event_id"]
+            )
+    return json.dumps(res)
+
 app.run(port=8080, debug=True)

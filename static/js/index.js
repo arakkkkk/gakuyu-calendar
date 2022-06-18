@@ -30,3 +30,61 @@ function set_alert(icon, text, color) {
   }, 3000);
 }
 
+// dateのinput formを当日の日付に初期化する
+const initDateForm = () => {
+  let today = new Date();
+  today.setDate(today.getDate());
+  let yyyy = today.getFullYear();
+  let mm = ("0" + (today.getMonth() + 1)).slice(-2);
+  let dd = ("0" + today.getDate()).slice(-2);
+  let today_value = yyyy + '-' + mm + '-' + dd;
+
+  let $date_forms = document.querySelectorAll("input[type=date]")
+  for(let $date_form of $date_forms) {
+    $date_form.value = today_value
+  }
+}
+
+// table要素を指定したカラムで絞りこむためのselectboxを作る関数
+const set_filterselections = (filter_nums, $table=document.querySelector("table")) => {
+  let $selection = document.querySelector("filterSelections")
+  $selection.innerHTML = ""
+  let contents = ""
+  
+  for(let filter_num of filter_nums) {
+    let header_label =$table.querySelectorAll("th")[filter_num].innerText
+    contents += `<a>${header_label}</a>
+                <select id="filter_${String(filter_num)}" onchange="">
+                  <option value="">-</option>`
+    let check_list = []
+    for(let $tr of $table.querySelector("tbody").querySelectorAll("tr")) {
+      let selection_label = $tr.querySelectorAll("td")[filter_num].innerText
+      if(check_list.includes(selection_label)) {
+        continue
+      } else {
+        contents += `<option value="${selection_label}">${selection_label}</option>`
+        check_list.push(selection_label)
+      }
+    }
+    contents += "</select></br>"
+  }
+  $selection.innerHTML = contents
+}
+
+// 上で作成したselectboxで絞り混みを実行する関数
+const submit_filter = ($table=document.querySelector("table")) => {
+  for($tr of $table.querySelector("tbody").querySelectorAll("tr")) {
+    $tr.hidden = false
+  }
+
+  $selection_parent = document.querySelector("filterSelections")
+  for(let $selection of $selection_parent.querySelectorAll("select")) {
+    if($selection.value == "") continue
+    let selection_num = Number($selection.getAttribute("id").split("_")[1])
+    for($tr of $table.querySelector("tbody").querySelectorAll("tr")) {
+      if($tr.querySelectorAll("td")[selection_num].innerText != $selection.value) {
+        $tr.hidden = true
+      }
+    }
+  }
+}
