@@ -1,0 +1,25 @@
+version: '3'
+services:
+
+  flask:
+    build:
+      context: .
+      dockerfile: ./docker/flask/Dockerfile
+    container_name: flask-gakuyu-calendar
+    restart: always
+    tty: true
+    # command: sh -c "cd /app/react/react-app && yarn start"
+    volumes:
+      - .:/app/flask
+    ports:
+      - 8081:8081
+    networks:
+      - container-link
+
+networks:
+  default:
+    external:
+      name: bridge
+  container-link:
+    name: container_network
+    name: container_network

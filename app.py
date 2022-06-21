@@ -65,4 +65,5 @@ def api_equipments_update():
     elif status == "返却":
         res = api.update(event_id, status="返却")
     return json.dumps(res)
-app.run(port=8080, debug=True)
+
+app.run(port=8081, debug=True)
