@@ -29,11 +29,11 @@
           <th>TELL</td>
           <th>備品名</td>
           <th>個数</td>
+          <th>No.</td>
+          <th>準備者</td>
           <th>貸出時間</td>
           <th>返却時間</td>
           <th>予約日</td>
-          <th>状態</td>
-          <th></td>
           <th>削除</td>
         </tr>
       </thead>
@@ -59,12 +59,6 @@
   const create_table = (reservations) =>{
     table_contents = ""
     for(let reservation of reservations) {
-        let change_button
-        if(reservation.description.status == "予約") {
-          change_button = `<button onclick="update_event('貸出')">貸し出す</button>`
-        } else {
-          //change_button = `<td><button onclick="update_event('貸出')">貸し出す</button></td>`
-        }
         table_contents += `
           <tr>
              <td>${reservation.description.group}</td>
@@ -72,11 +66,11 @@
              <td>${reservation.description.tell}</td>
              <td>${reservation.description.name}</td>
              <td>${reservation.description.count}</td>
+             <td>${inputBoxComponent(reservation.description.number, "'"+reservation.id+"'", "number")}</td>
+             <td>${inputBoxComponent(reservation.description.ready, "'"+reservation.id+"'", "ready")}</td>
              <td>${reservation.start.dateTime}</td>
              <td>${reservation.end.dateTime}</td>
              <td>${reservation.created}</td>
-             <td>${reservation.description.status}</td>
-             <td>${change_button}</td>
              <td>
                <a onclick="delete_reservation('${reservation.id}', this)" style="cursor:pointer">
                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="blue" class="bi bi-trash" viewBox="0 0 16 16">
@@ -154,6 +148,33 @@
     });
   }
 
-  const update_event = () => {}
+
+  const test = () => {
+    const json = {
+      start: {
+        date: "2022-06-15",
+        time: "00:00"
+      },
+      end: {
+        date: "2022-06-22",
+        time: "23:59"
+      },
+    }
+    $.ajax({
+      type: "POST",
+      url: "/api/equipments/list",
+      contentType: "application/json",
+      data: JSON.stringify(json),
+      dataType: "json",
+      scriptCharset: "utf-8",
+    })
+    .done(function (result) {
+      create_table(result)
+      set_filterselections([0, 1, 3])
+      })
+    }
+  test()
+
+
 </script>
 

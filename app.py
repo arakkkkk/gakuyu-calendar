@@ -56,14 +56,12 @@ def api_equipments_delete():
 @app.route('/api/equipments/update', methods=["POST"])
 def api_equipments_update():
     api = CalendarApi()
-    status = request.json["status"]
     event_id = request.json["event_id"]
-    if status == "予約":
-        res = api.update(event_id, status="予約")
-    elif status == "貸出":
-        res = api.update(event_id, status="貸出")
-    elif status == "返却":
-        res = api.update(event_id, status="返却")
+    update_json = {}
+    for key, value in request.json.items():
+        if key not in ["event_id"]:
+            update_json[key] = value
+    res = api.update(event_id, update_json)
     return json.dumps(res)
 
 app.run(port=8081, debug=True)

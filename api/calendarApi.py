@@ -76,11 +76,11 @@ class CalendarApi:
                 ).execute()
         return result
 
-    def update(self, event_id, **ops):
+    def update(self, event_id, update_json):
         event = self.service.events().get(
                 calendarId=self.calenderId,
                 eventId=event_id).execute()
-        for key, val in ops.items():
+        for key, val in update_json.items():
             desc_json = json.loads(event["description"])
             desc_json[key] = val
         event["description"] = json.dumps(desc_json, indent=2, ensure_ascii=False)
@@ -88,6 +88,7 @@ class CalendarApi:
                 calendarId=self.calenderId,
                 eventId=event_id,
                 body=event).execute()
+        return response
 
 
 if __name__ == '__main__':
