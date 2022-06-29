@@ -1,45 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
   {% include "layouts/_headtag.html" %}
+  {% include "layouts/_header.html" %}
   <body>
-    {% include "layouts/_gen.html" %}
+    <div class="wrapper d-flex align-items-stretch">
+      {% include "layouts/_gen.html" %}
+      {% include "layouts/_sidebar.html" %}
+      <div class="container">
+        <div class="card shadow mb-4 p-4">
+          <div>
+            <label>貸出</label>
+            <input type="date" id="start_date">
+          </div>
+        
+          <div>
+            <label>返却</label>
+            <input type="date" id="end_date">
+          </div>
 
+          <button type="button" class="btn btn-primary" onclick="submit_form()">予約を調べる</button>
+
+          <div></div>
+
+          <filterSelections></filterSelections>
+          <button type="button" class="btn btn-success" onclick="submit_filter()">絞り込み</button>
+
+          <table class="table table-bordered" id="reservation_table">
+            <thead>
+              <tr>
+                <th>団体名</td>
+                <th>名前</td>
+                <th>TELL</td>
+                <th>備品名</td>
+                <th>個数</td>
+                <th>No.</td>
+                <th>準備者</td>
+                <th>貸出時間</td>
+                <th>返却時間</td>
+                <th>予約日</td>
+                <th>削除</td>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        <div>
+      <div>
     <div>
-      <label>貸出</label>
-      <input type="date" id="start_date">
-    </div>
-  
-    <div>
-      <label>返却</label>
-      <input type="date" id="end_date">
-    </div>
-
-    <button onclick="submit_form()">予約を調べる</button>
-
-    <div></div>
-
-    <filterSelections></filterSelections>
-    <button onclick="submit_filter()">絞り込み</button>
-
-    <table class="table table-bordered" id="reservation_table">
-      <thead>
-        <tr>
-          <th>団体名</td>
-          <th>名前</td>
-          <th>TELL</td>
-          <th>備品名</td>
-          <th>個数</td>
-          <th>No.</td>
-          <th>準備者</td>
-          <th>貸出時間</td>
-          <th>返却時間</td>
-          <th>予約日</td>
-          <th>削除</td>
-        </tr>
-      </thead>
-      <tbody>
-      </tbody>
-    </table>
 
 
   </body>
@@ -173,7 +180,6 @@
       set_filterselections([0, 1, 3])
       })
     }
-  test()
 
 
 </script>

@@ -9,6 +9,18 @@ app = Flask(__name__)
 CORS(app)
 app.config['JSON_AS_ASCII'] = False
 
+@app.route('/')
+def index():
+    return render_template("index.html")
+
+@app.route('/facility/meetingroom')
+def facility_meetingroom():
+    return render_template("facility/meetingroom.html")
+
+@app.route('/facility/musicroom')
+def facility_musicroom():
+    return render_template("facility/musicroom.html")
+
 @app.route('/equipments')
 def equipments_index():
     return render_template("equipments/index.html")

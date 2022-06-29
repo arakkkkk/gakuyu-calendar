@@ -1,87 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
   {% include "layouts/_headtag.html" %}
+  {% include "layouts/_header.html" %}
   <body>
-    {% include "layouts/_gen.html" %}
+    <div class="wrapper d-flex align-items-stretch">
+      {% include "layouts/_gen.html" %}
+      {% include "layouts/_sidebar.html" %}
+      <div class="container">
+        <div class="card shadow mb-4 p-4">
 
-    <table class="table table-bordered" id="reservation_table">
+          <table class="table table-bordered" id="reservation_table">
 
-      <tr>
-        <td><h5>備品情報</h5></td>
-      </tr>
-      <tr>
-        <td>貸出</td>
-        <td>
-          <input type="date" id="start_date">
-          <input type="time" id="start_time">
-        </td>
-      </tr>
-      <tr>
-        <td>返却</td>
-        <td>
-          <input type="date" id="end_date">
-          <input type="time" id="end_time">
-        </td>
-      </tr>
-      <tr>
-        <td>備品のカテゴリ</td>
-        <td>
-          <select id="equip_category" onchange="set_equipment_option(this)">
-            <option value="">-</option>
-            {% for equip_category in equip_json %}
-            <option value="{{equip_category}}">{{ equip_category }}</option>
-            {% endfor %}
-         </select>
-        </td>
-      </tr>
-      <tr>
-        <td>名前</td>
-        <td>
-          <select id="equip_name" onchange="set_count_option(this)">
-            <option value="">-</option>
-         </select>
-        </td>
-      </tr>
-      <tr>
-        <td>個数</td>
-        <td>
-          <select id="equip_count" name="subsubselect">
-            <option value="">-</option>
-         </select>
-        </td>
-      </tr>
+            <tr>
+              <td><h5>備品情報</h5></td>
+            </tr>
+            <tr>
+              <td>貸出</td>
+              <td>
+                <input type="date" id="start_date">
+                <input type="time" id="start_time">
+              </td>
+            </tr>
+            <tr>
+              <td>返却</td>
+              <td>
+                <input type="date" id="end_date">
+                <input type="time" id="end_time">
+              </td>
+            </tr>
+            <tr>
+              <td>備品のカテゴリ</td>
+              <td>
+                <select id="equip_category" onchange="set_equipment_option(this)">
+                  <option value="">-</option>
+                  {% for equip_category in equip_json %}
+                  <option value="{{equip_category}}">{{ equip_category }}</option>
+                  {% endfor %}
+               </select>
+              </td>
+            </tr>
+            <tr>
+              <td>名前</td>
+              <td>
+                <select id="equip_name" onchange="set_count_option(this)">
+                  <option value="">-</option>
+               </select>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                個数
+                <br>
+                  <input type="checkbox" id="youbousyo_input" onchange="youbousyo_handler(this)">
+                  <label for="youbousyo_input">要望書</label>
+                </td>
+              <td>
+                <select id="equip_count" name="subsubselect">
+                  <option value="">-</option>
+               </select>
+              </td>
+            </tr>
 
-      <tr>
-        <td><h5>利用者情報</h5></td>
-      </tr>
-      <tr>
-        <td>団体名</td>
-        <td>
-          <input id="group" />
-        </td>
-      </tr>
-      <tr>
-        <td>名前</td>
-        <td>
-          <input id="client" />
-        </td>
-      </tr>
-      <tr>
-        <td>Tell</td>
-        <td> 
-          <input id="tell" />
-        </td>
-      </tr>
-      <tr>
-        <td>備考</td>
-        <td> 
-          <textarea id="note" style="width:100%;height:100%;"></textarea>
-        </td>
-      </tr>
+            <tr>
+              <td><h5>利用者情報</h5></td>
+            </tr>
+            <tr>
+              <td>団体名</td>
+              <td>
+                <input id="group" />
+              </td>
+            </tr>
+            <tr>
+              <td>名前</td>
+              <td>
+                <input id="client" />
+              </td>
+            </tr>
+            <tr>
+              <td>Tell</td>
+              <td> 
+                <input id="tell" />
+              </td>
+            </tr>
+            <tr>
+              <td>備考</td>
+              <td> 
+                <textarea id="note" style="width:100%;height:100%;"></textarea>
+              </td>
+            </tr>
 
-    </table>
+          </table>
 
-    <button onclick="submit_form()">予約する</button>
+          <button type="button" class="btn btn-primary" onclick="submit_form()">予約する</button>
+        </div>
+      </div>
+    </div>
 
   </body>
 </html>
@@ -108,7 +121,7 @@
       for(let equip of equip_json[cate]) {
         if(equip[0] != element.value) continue
         for(let i=1; i<=equip[1]; i++) {
-          content_str += `<option value="${i}">${i}</option>`
+          content_str += `<option value="${i}" id="not_youbousyo">${i}</option>`
         }
       }
     }
@@ -131,6 +144,27 @@
           return false
         }
         return true
+    }
+
+  const youbousyo_handler = ($input) => {
+      if($input.checked) {
+        let $child_selection = document.getElementById("equip_count")
+        let content_str = ""
+        for(let i=0; i<300; i++){
+          content_str += `<option value="${i}" id="is_youbousyo">${i}</option>`
+        }
+        $child_selection.innerHTML += content_str
+        for(let $option_not_youbousyo of document.querySelectorAll("#not_youbousyo")) {
+            $option_not_youbousyo.hidden = true
+        }
+      } else {
+        for(let $option_is_youbousyo of document.querySelectorAll("#is_youbousyo")) {
+            $option_is_youbousyo.remove()
+        }
+        for(let $option_not_youbousyo of document.querySelectorAll("#not_youbousyo")) {
+            $option_not_youbousyo.hidden = false
+        }
+      }
     }
 
   const submit_form = () => {

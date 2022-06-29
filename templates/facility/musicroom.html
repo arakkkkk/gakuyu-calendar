@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% include "layouts/_headtag.html" %}
+  {% include "layouts/_header.html" %}
+  <body>
+    <div class="wrapper d-flex align-items-stretch">
+      {% include "layouts/_gen.html" %}
+      {% include "layouts/_sidebar.html" %}
+      <div class="container">
+        <div class="card shadow mb-4">
+          <div class="row">
+            <!-- Area Chart -->
+            <div class="col-xl-12 col-lg-12">
+              <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between text-white" id="bgcolor">
+                  <h6 class="m-0 font-weight-bold text-light">ルール</h6>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                  ①平日 1 時間 休日 2 時間<br>
+                  ②個人・団体で利用できるのは1日1回まで<br>
+                  但し、軽音団体のみバンドごとで申請が可能とします。<br>
+                  ③施設のはしご、延長は原則なし<bmr>
+                  <div class="mt-3 text-danger">
+                    <h4>＊ルールに反する申請が行われていた場合、ルールに則った貸し出しをお願いします。</h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Content Row -->
+          <div class="row">
+            <!-- Area Chart -->
+            <div class="col-xl-12 col-lg-12">
+              <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between text-white" id="bgcolor">
+                  <h6 class="m-0 font-weight-bold text-light">音楽練習室申請</h6>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <iframe src="https://calendar.google.com/calendar/embed?src=c_74l4vs74a0the6972eoaaig25g%40group.calendar.google.com&ctz=Asia%2FTokyo" style="border: 0" width="100%" height="600" frameborder="0" scrolling="no" id="cal"></iframe>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+
