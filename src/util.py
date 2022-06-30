@@ -1,5 +1,5 @@
 import glob
-from datetime import datetime
+from datetime import datetime, timedelta
 
 def getJsonByDirectory(path) -> dict:
     files = glob.glob(path+"/*")
@@ -15,7 +15,7 @@ def getJsonByDirectory(path) -> dict:
 
     return res_json
 
-def request2datetime(datetime_json):
+def request2datetime(datetime_json, jst=True):
     date = datetime_json["date"]
     time = datetime_json["time"]
     res_datetime = datetime(
@@ -25,5 +25,7 @@ def request2datetime(datetime_json):
             int(time.split(":")[0]),
             int(time.split(":")[1])
             )
+    if jst:
+        res_datetime = res_datetime - timedelta(hours=+9)
     return res_datetime
 
