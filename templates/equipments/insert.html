@@ -120,7 +120,7 @@
     for(let cate in equip_json){
       for(let equip of equip_json[cate]) {
         if(equip[0] != element.value) continue
-        for(let i=1; i<=equip[1]; i++) {
+        for(let i=1; i<=equip[2]; i++) {
           content_str += `<option value="${i}" id="not_youbousyo">${i}</option>`
         }
       }

@@ -1,4 +1,5 @@
 import glob
+import re
 from datetime import datetime, timedelta
 
 def getJsonByDirectory(path) -> dict:
@@ -9,7 +10,7 @@ def getJsonByDirectory(path) -> dict:
         file_content = f.read()
         f.close()
     
-        equip_category = file.split("/")[-1].split(".")[0]
+        equip_category = re.split(r"[/\\]", file)[-1].split(".")[0]
         equipments = [ row.split(",") for row in file_content.split("\n") if len(row) > 0]
         res_json[equip_category] = equipments
 
